@@ -1,0 +1,70 @@
+// to solve this we'll assign one process the task of writing to the times.
+// to simulate the semaphores we use send and receive.
+// and we'll use a barrier to make sure all processes are ready before we start.
+procedure main(argc, argv[]):
+  if argc = 3 then
+    // We need a referee, and two processes for each team -> odd number: 2t + 1
+    if process_count >= 3 and process_count % 2 = 1 then 
+      declare constant team_count = div(process_count - 1, 2)
+      declare constant stage1_delay = integer(argv[1])
+      declare constant stage2_delay = integer(argv[2])
+      // this an example of a task division between processes
+      // within the main procedure of our program we conditionally assign
+      // what each process will do.
+      // we condition the actions of the processes depending of their rank
+      if process_number = 0 then
+      // the referee will be process 0
+        referee(team_count)
+        // if we are a process less than the number of teams, we are a that
+        // will be in the first stage
+      else if process_number <= team_count then
+        run_stage1(stage1_delay, process_number, team_count)
+      else
+      // otherwise we are a process that will be in the second stage
+        run_stage2(stage2_delay, process_number, team_count)
+      end if
+    else
+      print "error: process count must be odd and greater than 3"
+    end if
+  else
+    print "usage: relay_race_dist stage1_delay stage2_delay"
+  end if
+end procedure
+// we need to put the barrier to all the processes to make sure they are ready
+// this is because openmpi stablishes the barrier with the amount of processes
+// created, so if we don't put it here, the processes will be waiting forever
+procedure run_stage1(stage1_delay, process_number, team_count):
+  wait_barrier() // wait for all processes to be ready OPENMPI
+  delay(stage1_delay) // run the stage
+  declare constant peer = process_number + team_count // we get the peer
+  declare baton := true // we declare the baton that will relay to the peer
+  send(&baton, 1, peer) // we send the baton to the peer as a message
+end function
+
+procedure run_stage2(stage2_delay, process_number, team_count):
+  wait_barrier()
+  declare peer := process_number - team_count // we get the peer
+  declare baton := false  // we declare in which to receive the baton
+  receive(&baton, 1, peer)  // we wait to receive the baton
+  delay(stage2_delay) // run the stage
+  send(&peer, 1, 0) // we signal the referee we are done
+  // by sending the peer to the referee
+end procedure
+
+procedure referee(team_count):
+  declare constant start_time = wall_time()
+  wait_barrier()
+  declare place := 0
+  // we do this for each team
+  for index := 0 to team_count do
+    declare team := 0 // we declare the team to receive the peer
+    // we wait to receive the first team to finish
+    receive(&team, 1, any_process)
+    // after we receive 
+    // we get the time and print it
+    declare constant elapsed = wall_time() - start_time
+    // we print the place+1, the team and the time 
+    place := place + 1
+    print "Place ", place, ": team ", team, " in ", elapsed, "s"
+  end for
+end procedure

@@ -1,0 +1,25 @@
+procedure main(argc, argv[])
+  // create thread_count as result of converting argv[1] to integer
+  thread_count := integer(argv[1])
+  create_thread(read)
+  // Data parallelism -> performance increase
+  for thread_number := 0 to thread_count do
+    create_thread(calculate, thread_number)
+  end for
+  print "Hello from main thread"
+  // Task concurrency -> separation of concerns
+  create_thread(merge)
+  create_thread(print)
+end procedure
+
+procedure read()
+  ...
+end procedure
+
+procedure calculate(thread_number)
+  ...
+end procedure
+
+procedure merge()
+  ...
+end procedure

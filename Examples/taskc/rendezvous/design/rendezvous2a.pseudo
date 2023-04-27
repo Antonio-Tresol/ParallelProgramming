@@ -1,0 +1,24 @@
+//In this version one thread first waits and the other warns. It is a correct
+//solution although slightly less efficient than version 1. 
+//There are two equivalent variants: a) Thread a first alerts and then waits and thread b first waits and then alerts.
+//b) Thread a first waits and then alerts and thread b first alerts and then waits.
+procedure main:
+  shared a1_ready := create_semaphore(0)
+  shared b1_ready := create_semaphore(0)
+  create_thread(thread_a)
+  create_thread(thread_b)
+end procedure
+
+procedure thread_a:
+  statement a1
+  wait(b1_ready)
+  signal(a1_ready)
+  statement a2
+end procedure
+
+procedure thread_b:
+  statement b1
+  signal(b1_ready)
+  wait(a1_ready)
+  statement b2
+end procedure

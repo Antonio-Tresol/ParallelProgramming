@@ -1,0 +1,1 @@
+in this example we are solving the following problem:   if w threads are created, the first w - 1 threads to arrive at the rendezvous point should wait until the thread at position w reaches the rendezvous point. At which point all w threads can continue executing concurrently. This pattern is known as a barrier.

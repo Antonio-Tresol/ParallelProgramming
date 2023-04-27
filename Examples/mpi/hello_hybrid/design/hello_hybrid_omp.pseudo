@@ -1,0 +1,12 @@
+procedure main(argc, argv[])
+  shared const thread_count = integer(argv[1])
+  print "Hello from main thread of process ", process_number, " of " \
+    , process_count," on ", process_hostname
+
+  parallel do   // for the OpenMP parallel region in pseudo-code
+    print "\tHello from thread ", thread_number, " of ", thread_count, \
+      " of process ", process_number, " of ", process_count," on " \
+      , process_hostname
+  end parallel // for the OpenMP parallel region in pseudo-code
+
+end procedure

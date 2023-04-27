@@ -1,0 +1,890 @@
+# callgrind format
+version: 1
+creator: callgrind-3.18.1
+pid: 14343
+cmd:  bin/goldbach_pthread 3
+part: 1
+thread: 3
+
+
+desc: I1 cache: 
+desc: D1 cache: 
+desc: LL cache: 
+
+desc: Timerange: Basic block 0 - 961553776
+desc: Trigger: Program termination
+
+positions: line
+events: Ir
+summary: 3398137606
+
+
+ob=(2) ???
+fl=(51) ???
+fn=(932) 0x0000000004966370
+0 4
+cob=(3) /usr/lib/x86_64-linux-gnu/libc.so.6
+cfi=(189) ./malloc/./malloc/malloc.c
+cfn=(774) free
+calls=2 3352 
+0 8
+
+fn=(688) 0x0000000000109220
+0 36
+cob=(3)
+cfi=(189)
+cfn=(690) calloc
+calls=18 3624 
+0 5820
+
+fn=(910) 0x00000000001091f0
+0 36
+cob=(4) /usr/lib/x86_64-linux-gnu/libm.so.6
+cfi=(243) ./math/./math/w_logl_compat.c
+cfn=(912) logl
+calls=18 29 
+0 576
+
+ob=(3)
+fl=(248) ./sunrpc/./sunrpc/rpc_thread.c
+fn=(924) __rpc_thread_destroy
+21 4
++1 2
++2 2
++15 4
+
+fl=(234) ./misc/../sysdeps/unix/sysv/linux/x86_64/clone.S
+fn=(866) clone
+83 1
++1 1
++1 1
++10 1
++3 1
++1 1
++1 1
+cfi=(221) ./nptl/./nptl/pthread_create.c
+cfn=(882) start_thread
+calls=1 336 
+* 3398137599
+
+fl=(174) ./setjmp/../sysdeps/x86_64/setjmp.S
+fn=(612) __sigsetjmp
+30 1
++2 1
++9 1
++1 2
++1 1
++4 1
++1 1
++1 1
++1 1
++1 1
++2 2
++2 1
++1 1
++1 1
++2 2
++2 1
++5 1
++1 1
++17 1
+cfi=(175) ./setjmp/./setjmp/sigjmp.c
+cfn=(614) __sigjmp_save
+calls=1 -56 
+* 9
+
+fl=(214) ./misc/../sysdeps/unix/sysv/linux/mmap64.c
+fn=(796) mmap
+47 2
++3 2
++8 4
++2 1
+
+fl=(250) ./resolv/./resolv/resolv_context.c
+fn=(928) __resolv_context_freeres
+242 4
++2 1
+-2 2
++2 1
++1 1
++1 2
++6 6
+
+fl=(189)
+fn=(690)
+3624 36
++10 18
+-10 72
++10 144
++8 36
++3 54
++2 54
++3 144
++7 18
++8 18
+-7 36
++7 36
+fi=(190) ./malloc/./malloc/arena.c
+61 18
++95 108
+fe=(189)
+3668 72
++11 54
+cfn=(670) _int_malloc
+calls=18 1343 
+* 2538
++2 90
+fi=(190)
+162 54
+fe=(189)
+3681 36
++3 54
++2 36
++12 36
++11 18
++5 18
+-2 36
++50 108
+-53 18
++12 72
+-20 72
++31 18
++2 36
++2 36
++5 18
++2 18
+-2 18
++3 36
+-51 36
++1 72
+fi=(190)
+61 18
++95 90
+fe=(189)
+3681 18
+fi=(190)
+162 54
+fe=(189)
+3241 4
+cfn=(668) tcache_init.part.0
+calls=1 -6 
+* 1243
+* 1
+
+fn=(778) _int_free
+4421 8
++10 1
+-10 3
++10 2
++6 5
++1 2
++4 4
++8 5
++43 2
+4702 11
+4569 2
++3 1
++3 4
++7 1
+-4 1
++4 2
++3 2
++5 3
++3 2
++1 2
++1 2
+2012 3
+4601 2
++9 2
++5 2
++4 1
++9 1
+-1 1
++1 3
++1 2
++2 1
++2 2
++5 1
++1 1
++2 3
++1 1
++30 2
++20 3
++1 4
+4576 5
+
+fn=(668)
+3235 3
++9 4
++10 4
++7 2
++2 1
++1 2
+-1 1
++1 86
++3 4
+fi=(190)
+930 1
+cfn=(894) get_free_list
+calls=1 809 
+* 13
+* 1
++1 5
+cfn=(896) arena_get2.part.0
+calls=1 +3 
+* 975
+fe=(189)
+3245 4
+cfn=(670)
+calls=1 1343 
+* 131
+* 1
++1 2
++7 3
+
+fn=(774)
+3352 3
++4 6
+-4 1
++14 1
+-14 2
++12 1
++4 1
+-4 1
++4 2
++17 3
+fi=(190)
+162 3
+61 1
++95 5
++6 2
+fe=(189)
+3391 2
+cfn=(778)
+calls=1 4421 
+* 105
++3 1
++1 6
+3241 4
+
+fn=(670)
+1343 38
+3771 19
+1362 19
+3771 152
+1362 38
+3904 19
++2 19
+-2 19
++2 38
+1362 38
+3811 38
+4397 38
+3838 38
++63 2
+-48 54
+-10 18
++2 90
+4399 38
+3903 19
+4399 247
+3983 19
++1 19
+-1 38
+-1 38
++2 38
+-2 54
++12 18
+-6 18
++73 72
+-67 55
+-6 1
++73 4
+-67 3
+4413 171
+4183 38
++73 38
++1 19
++1 19
+-1 19
++1 19
++1 38
++1 57
++5 38
++4 57
++3 76
+-3 57
++3 76
+-3 38
++3 54
++97 19
++1 38
++2 38
++3 57
+3904 3
+4380 19
+-2 38
++2 19
+-1 19
++6 19
+-5 19
+-3 19
++3 19
++2 19
+-2 76
+2005 19
+4382 19
+2005 38
+
+fl=(252) ./dlfcn/./dlfcn/libc_dlerror_result.c
+fn=(934) __libc_dlerror_result_free
+29 2
++1 4
++9 2
+
+fl=(245) ./stdlib/./stdlib/cxa_thread_atexit_impl.c
+fn=(918) __call_tls_dtors
+149 4
++1 4
++18 4
+
+fl=(228) ./misc/../sysdeps/unix/syscall-template.S
+fn=(900) munmap
+117 10
++5 2
+
+fn=(944) madvise
+117 5
++5 1
+
+fn=(844) mprotect
+117 5
++5 1
+
+fl=(175)
+fn=(614)
+28 3
++2 2
+-1 1
++5 3
+
+fl=(226) ./misc/../sysdeps/unix/sysv/linux/getpagesize.c
+fn=(840) getpagesize
+27 1
++1 4
++2 1
+
+fl=(155) ./ctype/./ctype/ctype-info.c
+fn=(508) __ctype_init
+29 1
++2 7
++2 4
++2 4
++1 1
+
+fl=(246) ./nptl/./nptl/nptl_deallocate_tsd.c
+fn=(920) __nptl_deallocate_tsd
+23 1
++5 4
++82 1
+
+fl=(190)
+fn=(894)
+809 1
++3 1
+-3 2
++1 2
++2 1
+-1 1
++26 5
+
+fn=(936) __malloc_arena_thread_freeres
+999 8
+fi=(189)
+3206 1
++2 1
+-2 1
++2 1
++2 2
++4 3
++4 1
+fe=(190)
+162 1
+fi=(189)
+3220 192
+-2 192
++13 2
+cfn=(774)
+calls=1 3352 
+* 142
+* 1
+fe=(190)
+1005 2
++1 1
++2 2
++2 4
++3 3
++1 3
++2 1
++1 1
+-1 1
++3 4
++2 8
+
+fn=(898) alloc_new_heap
+484 8
+51 3
+491 3
++2 3
++6 2
++7 1
++2 1
+-9 1
++9 1
+-9 4
++7 2
++12 7
+cfi=(214)
+cfn=(796)
+calls=1 47 
+* 9
+* 1
++1 2
++2 1
++1 3
++2 1
+-3 1
++6 1
+-3 2
++4 4
+cfi=(228)
+cfn=(900)
+calls=1 117 
+* 6
++17 4
+cfi=(228)
+cfn=(844)
+calls=1 117 
+* 6
+* 2
+fi=(189)
+2028 4
+fe=(190)
+554 1
++2 1
+-2 1
++3 1
++2 9
+51 1
++10 2
+525 3
+cfi=(228)
+cfn=(900)
+calls=1 117 
+* 6
+* 2
+
+fn=(896)
+934 1
++4 1
+-14 7
++10 2
++2 3
++23 3
++12 7
+-33 2
++23 7
+565 1
+744 2
+565 2
++11 7
+cfn=(898)
+calls=1 -92 
+* 110
+* 1
+746 2
++9 3
+fi=(189)
+1966 2
++3 1
+-3 1
++3 2
+-3 2
++3 126
+-3 126
++3 252
+-3 252
++7 3
++2 1
++3 1
+fe=(190)
+763 1
+-1 1
+-5 1
++2 3
++5 2
++1 2
++2 1
+-1 1
++1 3
++2 1
++1 1
++4 1
+-4 1
++1 1
++3 1
+-2 1
++2 2
++3 2
++7 1
+-2 1
++2 3
++2 4
+-61 2
++63 4
++12 4
+
+fl=(249) ./resolv/./resolv/res-close.c
+fn=(926) __res_thread_freeres
+131 4
++1 1
+cfi=(250)
+cfn=(928)
+calls=1 242 
+* 17
++2 5
++8 4
+
+fl=(173) ./setjmp/../sysdeps/x86_64/bsd-_setjmp.S
+fn=(610) _setjmp
+28 1
++2 1
++2 1
+cfi=(174)
+cfn=(612)
+calls=1 -2 
+* 31
+
+fl=(221)
+fn=(882)
+336 8
++7 2
++22 4
++3 1
+cfi=(155)
+cfn=(508)
+calls=1 29 
+* 17
++4 1
+fi=(241) ./nptl/../sysdeps/unix/sysv/linux/rseq-internal.h
+32 3
++8 1
+fe=(221)
+373 2
++10 5
++17 2
+cfi=(173)
+cfn=(610)
+calls=1 28 
+* 34
+* 1
++14 1
++4 1
+-18 1
++14 1
++4 4
++3 2
++3 2
++2 1
+fi=(282) ./nptl/../sysdeps/unix/sysv/linux/internal-signals.h
+110 4
+fe=(221)
+426 1
+fi=(282)
+110 1
+fe=(221)
+428 1
++4 2
++11 1
++7 1
+cfi=(245)
+cfn=(918)
+calls=1 149 
+* 12
++3 1
+cfi=(246)
+cfn=(920)
+calls=1 23 
+* 6
++3 1
+cfi=(247) ./malloc/./malloc/thread-freeres.c
+cfn=(922) __libc_thread_freeres
+calls=1 34 
+* 654
++3 3
++31 2
++2 4
+fi=(253) ./nptl/../sysdeps/unix/sysv/linux/sigsetops.h
+112 1
+fe=(221)
+506 3
+fi=(253)
+112 2
+fe=(221)
+505 1
++1 2
++7 5
++1 1
++1 1
+-1 1
++1 3
++35 3
+fi=(225) ./nptl/./nptl/allocatestack.c
+190 1
+cfi=(226)
+cfn=(840)
+calls=1 27 
+* 6
+fe=(221)
+551 1
+fi=(225)
+190 1
++2 1
+fe=(221)
+551 1
+fi=(225)
+192 4
++1 2
++1 2
+fe=(221)
+554 3
++17 3
+442 3
+cob=(6) /home/antoniotresol/Documents/Uni/Concurrent/concurrente22b-antonio_badilaolivas/tareas/goldbach_pthread/bin/goldbach_pthread
+cfi=(215) /home/antoniotresol/Documents/Uni/Concurrent/concurrente22b-antonio_badilaolivas/tareas/goldbach_pthread/src/goldbach.c
+cfn=(886) goldbach
+calls=1 254 
+* 3398136748
+* 1
+fi=(225)
+195 4
+cfi=(228)
+cfn=(944)
+calls=1 -78 
+* 6
+* 1
+fe=(221)
+
+fl=(247)
+fn=(922)
+34 2
++2 1
+cfi=(248)
+cfn=(924)
+calls=1 -15 
+* 12
++2 1
+cfi=(249)
+cfn=(926)
+calls=1 +93 
+* 31
+fi=(251) ./malloc/../sysdeps/unix/sysv/linux/tls-internal.h
+-4 3
+cob=(2)
+cfi=(51)
+cfn=(932)
+calls=1 -34 
+* 6
++1 3
+cob=(2)
+cfi=(51)
+cfn=(932)
+calls=1 -35 
+* 6
+fe=(247)
++5 1
+cfi=(252)
+cfn=(934)
+calls=1 -11 
+* 8
++5 1
+-1 1
+cfi=(190)
+cfn=(936)
+calls=1 999 
+* 578
+
+ob=(4)
+fl=(243)
+fn=(912)
+29 54
++1 90
++14 18
++1 18
+-1 18
+cfi=(244) ./math/../sysdeps/x86_64/fpu/e_logl.S
+cfn=(914) __ieee754_logl
+calls=18 -14 
+* 378
+
+fl=(244)
+fn=(914)
+30 18
++1 18
++1 18
++1 18
++1 18
++1 18
++1 18
++1 18
++1 18
++1 18
++1 18
++1 18
++1 18
++1 18
++1 18
++1 18
++1 18
++1 18
++11 18
++1 18
++1 18
+
+ob=(6)
+fl=(215)
+fn=(890) goldbach_sums_odd
+179 48
++2 6
++1 18
+cob=(2)
+cfi=(51)
+cfn=(688)
+calls=6 0 
+* 2784
+* 18
++1 24
+cfi=(242) /home/antoniotresol/Documents/Uni/Concurrent/concurrente22b-antonio_badilaolivas/tareas/goldbach_pthread/src/Array_of_Sums.c
+cfn=(906) array_of_sums_init
+calls=6 6 
+* 96
++8 6
++2 24
++4 36
++1 18
+cfn=(908) nDivLogn_al
+calls=6 3 
+* 438
+* 6
++2 24
++3 12
++3 12
++2 265076
++2 113604
++2 1051168923
++2 600667956
++2 450500967
++2 632686404
++2 31526430
++2 12610572
+-12 600781560
+-4 151490
++30 24
+
+fn=(888) goldbach_sums
+239 144
++2 72
++2 90
++2 72
+cfn=(916) goldbach_sums_even
+calls=12 117 
+* 17658525
++7 12
+-3 36
+cfn=(890)
+calls=6 -70 
+* 3380476576
++3 54
+
+fn=(886)
+254 5
++1 2
++2 3
++2 3
++2 3
++2 3
++1 3
++3 4
++1 396
++2 396
++4 234
+cfn=(888)
+calls=18 -35 
+* 3398135581
+* 18
+-7 94
++9 1
++1 2
+
+fn=(908)
+3 90
++1 18
++1 36
++2 36
++1 108
+cob=(2)
+cfi=(51)
+cfn=(910)
+calls=18 -8 
+* 612
+* 288
++2 72
++1 18
++1 36
+
+fn=(916)
+117 96
++2 12
++5 12
++1 36
+cob=(2)
+cfi=(51)
+cfn=(688)
+calls=12 0 
+* 3072
+* 36
++1 48
+cfi=(242)
+cfn=(906)
+calls=12 6 
+* 192
++6 48
++3 72
++1 36
+cfn=(908)
+calls=12 3 
+* 876
+* 12
++1 48
++3 24
++3 24
++1 5124406
++2 2196174
++2 2196174
++1 4763100
++2 318365
++2 127346
+-10 2928268
++22 48
+
+fl=(242)
+fn=(906)
+6 90
++1 36
++1 36
++1 36
++1 36
++1 18
++1 36
+
+totals: 3398137606

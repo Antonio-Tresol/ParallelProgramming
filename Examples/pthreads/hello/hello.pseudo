@@ -1,0 +1,10 @@
+#Comment: haga un hilo que imprima hello
+
+procedure main:
+    create_thread(greet) #Comment: delego tareas, pido 
+    print "hello from the main thread"
+end procedure
+
+procedure greet:
+    print "hello from the second thread"
+end procedure

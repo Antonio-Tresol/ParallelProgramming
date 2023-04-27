@@ -1,0 +1,23 @@
+//A semaphore initialized to 1 and never exceeding this value is a binary semaphore.
+//It is equivalent to a mutex except that it has no owner.
+//When the semaphore has the value 1 it indicates that the mutex is available, and the value 0 that it is blocked.
+//It differs in that a mutex never exceeds the value 1, whereas a semaphore technically can,
+a//nd that a mutex can only be incremented by the same thread that decremented it.
+procedure main:
+  shared can_access_count := create_semaphore(1)
+  shared count := 0
+  create_thread(thread_a)
+  create_thread(thread_b)
+end procedure
+
+procedure thread_a:
+  wait(can_access_count)
+  count := count + 1
+  signal(can_access_count)
+end procedure
+
+procedure thread_b:
+  wait(can_access_count)
+  count := count + 1
+  signal(can_access_count)
+end procedure

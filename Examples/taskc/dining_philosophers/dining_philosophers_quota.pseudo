@@ -1,0 +1,41 @@
+// Solución 2: Hay una cuota o límite (de 4) en la cantidad de filósofos que pueden intentar comer al mismo tiempo, implementada por un multiplex
+procedure main(argc, argv[]):
+  shared chopsticks[] := create_semaphores(5, 1)
+  shared quota := create_semaphore(4) // we use a multiplex to limit the number of philosophers that can eat at the same time
+
+  for id := 0 to 5 do
+    create_thread(philosopher, id)
+  end for
+end procedure
+
+procedure philosopher(id):
+  while true do
+    think()
+    wait(quota) // we wait for the multiplex to be available, so that we can eat.
+    // the maximum number of philosophers that can eat at the same time is 4 like that
+    // one of them will always get the two chopsticks needed to eat, then it will freed them
+    // signal the multiplex, and the next philosopher will be able to eat
+      get_left_chopstick(id)
+      get_right_chopstick(id)
+      eat()
+      put_left_chopstick(id)
+      put_right_chopstick(id)
+    signal(quota)
+  end while
+end procedure
+
+procedure get_left_chopstick(id):
+  wait(chopsticks[(id + 1) mod 5])
+end procedure
+
+procedure get_right_chopstick(id):
+  wait(chopsticks[id])
+end procedure
+
+procedure put_left_chopstick(id):
+  signal(chopsticks[(id + 1) mod 5])
+end procedure
+
+procedure put_right_chopstick(id):
+  signal(chopsticks[id])
+end procedure

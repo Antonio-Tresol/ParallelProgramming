@@ -1,0 +1,18 @@
+//this pseudo solve the problem of doing
+//procedure thread a before thread b
+procedure main:
+// we add a semaphore to give order to the solution
+  shared a1_ready := create_semaphore(0) // can_run_b1
+  create_thread(thread_a)
+  create_thread(thread_b)
+end procedure
+
+procedure thread_a:
+  statement a1
+  signal(a1_ready) // he signals it is ready in case b1 is waiting
+end procedure
+
+procedure thread_b:
+  wait(a1_ready) // if he arrives here first, he waits
+  statement b1
+end procedure

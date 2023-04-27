@@ -1,0 +1,14 @@
+//this pseudo has the problem of the problem of doing
+//procedure thread a before thread b
+procedure main:
+  create_thread(thread_a)
+  create_thread(thread_b)
+end procedure
+
+procedure thread_a:
+  statement a1
+end procedure
+
+procedure thread_b:
+  statement b1
+end procedure

@@ -1,0 +1,3 @@
+Modifique el programa del Ejemplo 44 (hello_hybrid) para que reciba un rango indicado como dos números enteros [a,b[ en los argumentos de línea de comandos. Su programa debe distribuir (particionar) el rango entre los procesos de forma lo más equitativa posible, y dentro de los procesos debe distribuir los subrangos entre los hilos de ejecución.
+
+El hilo principal de cada proceso debe reportar en la salida estándar el rango asignado al proceso. Use la notación hostname:process.thread: message como prefijo para simplificar la salida. Cada hilo secundario debe reportar su rango asignado antecedido por un tabulador. La siguiente podría ser una interacción con su programa en dos nodos de un clúster, cada uno con un proceso por nodo, y cada nodo con tres CPU:

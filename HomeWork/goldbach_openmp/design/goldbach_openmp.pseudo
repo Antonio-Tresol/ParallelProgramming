@@ -1,0 +1,325 @@
+/** @brief SUMMARY of the pseudocode: 
+* @details :
+1. We do a procedure to read a series of numbers from the user and 
+   store in a array of nodes of information.
+    1.1 The array of nodes is a  array and the node will store the:
+    - the number
+    - a dynamic array of strings (grows as needed) sums of the number
+2. we distrubute the work units between the threads using static block mapping
+3. We do a procedure to produce a array of prime number with the 
+   sieve Atkin algorithm.
+4. Each threads does the procedure to compute the goldbach sums of the
+   numbers and store them in the dynamic array of strings for the block range of
+   units it was assign to.
+@notes:
+note: in this code we use int for a number n ∈ Z, that is, an interger in 
+mathemathics
+note 2: in this code we use array indexation from 1 to n.
+*/
+/*
+-------PRIVATE AND SHARED MEMORY------------------------------------------------
+*/
+// shared memory
+Declare Shared_Memory:
+   Array_of_Nodes:= A // array of nodes of information
+   int max //the biggest number in all the work units
+   Array_of_Primes:= P // array of prime numbers
+   Array_of_Booleans:= S // sieve of Atkin
+//END PRIVATE AND SHARED MEMORY-------------------------------------------------
+
+/*
+-------MAIN---------------------------------------------------------------------
+*/
+procedure main(arguments v):
+   // read the numbers
+   thread_count = MaxAmountOfThreads // get the max amount of threads
+   if v.length = 1:
+      thread_count = v[1] // get the amount of threads from the user
+   end if
+   A := read_numbers()
+   Sieve := sieve_atkin() /*get an array of primes between 0 and n, n being the 
+                         maximum number in A*/
+   P := get_array_of_primes(Sieve) 
+   set Shared_memory shared_mem:
+      Array_of_Nodes := A
+      Array_of_Primes := P
+      Array_of_Booleans := Sieve
+      work_unit_index := A.count
+   // compute the goldbach sums
+   compute_goldbach(thread_count, mem)
+   // print the results
+   print_goldbach_sums(A)
+end procedure
+//END MAIN----------------------------------------------------------------------
+
+/*
+--------PROCEDURES INPUTS AND OUTPUTS-------------------------------------------
+*/
+   /**
+   * @brief reads n numbers from the user and stores them in an array of nodes
+   * 
+   * @return an array of nodes of information (reference/pointer)
+   */
+procedure read_numbers(): 
+      A := array of nodes of information
+      while we don't receive a signal do  
+          read int n from user 
+          add int n in new node of information in A
+      end for
+end procedure
+ /**
+ * @brief prints all the goldbach sums of a number for each number in the array
+ * of nodes of information
+ * @param A the array of nodes of information
+ **/
+ procedure print_goldbach_sums(an Array of Nodes A):
+ for i := 1 to n do // n is the number of nodes in the array
+    if A[i] >= upperLimit then// upper limit is ~ := 2^64 
+       print number
+       print NA
+    end if
+    else  
+       print A[i].numberm //print the number in the node
+       print numberOfSums  //printe the amount of goldbach sums we found
+       for j := 1 to A[i].numberOfSums do //print the goldbach sums
+          for k := 1 to m do // m is the number of numbers in the sum
+             print A[i].arrayOfSums[j][k] 
+             print " "
+          end for
+          print jump line
+       end for
+       end if
+    end else
+ end for
+end procedure
+// END PROCEDURES INPUTS AND OUTPUTS---------------------------------------------
+
+/*
+--------PROCEDURES SIEVE/PRIME GENERATION---------------------------------------
+*/
+   /**
+   * @brief finds the prime numbers between 2 and n
+   * @param limit the maximum number to find the primes
+   * @return an array of primes (a mask)
+   * @credits: part of this code is based Bhojasia, M. (2022, May 16) and 
+   * geeksforgeeks.org  see more in bibliography in main README
+   * note: in case of this sieve algorithm not working, Eratosthenes sieve will be used
+   */
+procedure sieve_atkin(an array of booleans sieve ,an int limit):
+   int wlimit := square root of limit
+   
+   /* 
+   As explained by Atkin & Benrstein(2003, p.1023) the idea behind this algorithm
+   is to mark out vales using a irreductible quadratic form xy. Thus number 
+   p ∈ 1+4Z are cover by 4x^2 + y^2 = p (first condition),
+   for p ∈ 7 + 12Z  3x^2 + y^2 = p (second condition), 
+   for p ∈ 11 + 12Z 3x^2 - y^2 = p (x > 0, y > 0) (third condition),
+   where Z is the unit group. 4x^2 + y^2 = p 
+
+   One way to reduce these conditions is rephrasing them as follows:
+
+   - Condition one: 4x^2 + y^2 = p  is odd and modulo-60 remainder ∈ {1,13,17,29,37,41,49,53}
+   - Condition two: 3x^2 + y^2 = p  is odd and modulo-60 remainder ∈ {7,19,31,43}
+   - Condition three: 3x^2 - y^2 = p  is odd and modulo-12 remainder ∈ {11,23,47,59} and x > y > 0
+   
+   Note 1: it must be pointed out that these cuadratic forms are not unique, there 
+   could be others that work as well. (Atkin & Benrstein, 2003, pp.1028-1029).
+   
+   Note 2: some implementations of the sieve Atkin algorithm use modulo-60, 
+   nevertheless, the modulo-12 needs less comparisons and gives the same result.
+   */
+   for x := 1 to wlimit do
+      for y := 1 to wlimit do
+         n := 4x^2 + y^2
+         /* 
+         we test the first condition of the sieve of Atkin
+         n is odd and modulo-60 remainder ∈ {1,13,17,29,37,41,49,53}
+         that is the same as trying n mod 12 ∈ {1,5} 
+         */
+         if n <= limit and (n mod 12 = 1 or n mod 12 = 5) then
+            sieve[n] := true
+         end if 
+         /* we test the second condition of the sieve of Atkin
+         n is odd and modulo-60 remainder ∈ {7,19,31,43}
+         that is the same as trying n mod 12 ∈ {7}
+         */
+         n := 3x^2 + y^2
+         if n <= limit and n mod 12 = 7 then
+            sieve[n] := true
+         end if
+         /* we test the third condition of the sieve of Atkin
+         n is odd and modulo-12 remainder ∈ {11,23,47,59} and x > y > 0
+         that is the same as trying n mod 12 ∈ {11}
+         */
+         n := 3x^2 - y^2
+         if x > y and n <= limit and n mod 12 = 11 then
+            sieve[n] := true
+         end if
+      end for
+   end for
+   /* 
+   then we mark out the multiples of squares 
+   */
+   for i := 5 to wlimit do
+      if sieve[i] = true then
+         for j := 1 until j*i^2 <= limit do
+            sieve[j*i^2] := false
+         end for
+      end if
+   end for
+   set sieve[2] to true
+   set sieve[3] to true
+   set sieve[5] to true
+   return sieve
+
+end procedure
+/**
+ *@brief fills the array of primes with the first n primes
+*@param P the array of primes
+ */
+ procedure get_array_of_primes(a Sieve S, array of primes P):
+   add 2 and 3 to array of primes P
+   for i := 1 to S.limit do
+      if S.sieve[i] is true then
+         P[i] := i
+      end if
+   end for
+   return P
+ end procedure
+// END PROCEDURES SIEVE/PRIME GENERATION----------------------------------------
+
+/*
+--------PROCEDURES GOLDBACH COMPUTATIONS----------------------------------------
+*/
+/**
+ * @brief computes the goldbach sums of a even number n and stores them in an 
+ * array of strings within the node of information
+ * @param P the array of primes
+ * @param A the node of information that stores the even number
+ * @credits: part of this code is base on examples of code from geekforgeeks.org
+ * with modifications made by the author to optimize time complexity.
+ * see main README for more information.
+ */
+procedure goldbach_sums_even(Node A, array of primes P, a sieve S, int max):
+/* 
+ Must be said that for these procedure we assume we receive a reference to
+ the arrays 
+*/
+   saveSums := make a boolean flag
+   //  check if we have to save the sums
+   if A.number < 0 then
+      saveSums := true
+   end if
+   int limit := min(|A.number|/ln(A.number), P.length)
+   /* 
+   as explain by the Prime number Theorem 
+   the number of primes less than x is to x/ln(x) when
+   x tends to infinity (Crandall & Pomerance, 2005, p. 24). 
+   Thus, we will use this as the limit for the for loops
+   */
+   for i := 1 until limit do  // || absolute value P[i] <=  |A.number|/2
+      int  result := |A.number| - P[i]
+      // first free optimization
+      // we break the loop if the result is negative because it means
+      // that the no other prime next in the array will be less will give a
+      // non negative result.
+      if result < P[i] then
+         break
+      end if
+      if result <= max:
+         if S[result] is true and result >= P[i] then /* if result is prime then
+                                          here we can search for the result
+                                          in the array of primes */
+            A.numberOfSums := A.numberOfSums + 1 // increment the amount of sums 
+                                                // found
+            if saveSums is true then 
+               // add the sum to the dynamic array of sums
+               Add  result and P[i] to A.arrayOfSums as an Array
+               // add the sum to the dynamic array 
+            end if
+         end if
+      end if
+   end for
+end procedure
+/**
+ * @brief computes the goldbach sums of a odd number n and stores them in an 
+ * array of strings within the node of information
+ * @param P the array of primes
+ * @param A the node of information with the odd number
+ * @credits: part of this code is base on examples of code from geekforgeeks.org, 
+ * with modifications made by the author to optimize time complexity.
+ * see main README for more information.
+ */
+procedure goldbach_sums_odd(a Node A, array of primes P, a sieve S, int max):
+   SaveSums := make a boolean flag
+   //  check if we have to save the sums
+   if A.number < 0 then
+      saveSums := true
+   end if
+   int limit = min (|A.number|/ln(A.number), P.length)
+   int i;
+   int j;
+   int k;
+   for i:= 1 to limit do // || absolute value i := 1 to |A.number| do  
+      first := P[i] // get the first prime number
+
+      for j:= 1 to limit do // || absolute value j := 1 to |A.number| do  
+         second := P[j] // get the second prime number
+         result := A.number - first - second // compute the result so we can check if it is prime
+         // first free optimization
+         // we break the loop if the result is negative because it means
+         // that the no other prime next in the array will be less will give a
+         // non negative result.
+         if result < second then
+            break
+         end if
+         if result <= max:
+            if S[result] is true and result >= first and result >= second then  /* if result is prime then, here we can search for 
+                                          the result in the array of primes to see if the three of them make up*/
+               A.numberOfSums := A.numberOfSums + 1 // increment the amount of sums found
+               if saveSums is true then 
+                  Add first, second and result to A.arrayOfSums as an Array
+               end if
+            end if
+         end if
+      end for
+
+end procedure
+/**
+ * @brief computes the goldbach sums of a number
+ * @param P the array of primes
+ * @param A the node of information with the odd number
+ * @details this procedure is the one that is called from the main program, it
+ * checks if the number is even or odd and calls the corresponding procedure
+ */
+procedure goldbach_sums(a Node A, array of primes P, a sieve S):
+   if A.number > upperLimit // upper limit is ~ := 2^64 
+      return None
+   end if
+   else if A.number is even then
+      goldbach_sums_even(A, P, S)
+   end else if 
+   else
+      goldbach_sums_odd(A, P, S)
+   end if
+end procedure
+/**
+*@brief computes goldbach sums for all the numbers in the array of node
+* uses a parallel region to compute the sums in parallel
+*@param mem the array of memory of the threads
+*@param thread_count the amount of threads
+*/
+procedure compute_goldbach(Shared_Memory mem, int thread_count):
+   shared_mem := mem
+   
+   Array := shared_mem.array_of_nodes
+   Primes := shared_mem.primes
+   Sieve := shared_mem.sieve
+   int max := shared_mem.max
+
+   #pragma parallel for dynamic with shared (Array, Primes, Sieve, max)
+   for i := 1 to Array.size() do:
+      goldbach_sums(Array[i], Primes, Sieve, max)
+   end for
+end procedure
+// END PROCEDURES GOLDBACH COMPUTATIONS-----------------------------------------

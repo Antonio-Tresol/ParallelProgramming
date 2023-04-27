@@ -1,0 +1,22 @@
+// in this example we are solvin the problme of printing messages in order from different processes
+// we are using a "conditionally safe" solution. That is we send a message to the the process 0 of our
+// team of processes. This process will print all the messages it receives in order.
+procedure main:
+  declare constant message_capacity = 512 // we declare a buffer to receive the message
+  declare message as an array of message_capacity of char :=
+    "Hello from main thread of process " + process_number \
+    + " of " + process_count + " on " + process_hostname  // we build the message for each process
+  // this is important because one process cannot send a message to itself
+  if process_number != 0 then // if we are not the master process
+  // we send the message to the master process
+    send(message, length(message), 0)
+  else // if we are the master process  
+    print(process_number, " said ", message) // we print the message we sent to ourselves
+    for source := 1 to process_count do // we receive all the messages from the other processes
+      receive(&message, message_capacity, source)
+      // we receive the message from the source process
+      print(source, " sent ", message) 
+      // we print the message we sent indicating the source process.
+    end
+  end if
+end procedure

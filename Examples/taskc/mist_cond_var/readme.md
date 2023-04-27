@@ -1,0 +1,2 @@
+Rastree la memoria y el procesamiento del siguiente programa en una copia de esta hoja de cálculo, la cual tiene precargado el programa. Exporte el rastreo a un PDF y agréguelo a su repositorio de ejemplos. ¿Qué trabajo realiza la función mistery()? 
+R/ la funcion mistery implementa un torniquete, pues los primeros hilos llegan y esperan a que el ultimo llegue para poder salir, y asi sucesivamente.

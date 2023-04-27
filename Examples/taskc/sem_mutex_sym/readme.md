@@ -1,0 +1,1 @@
+in this example we show how to use semaphores as mutex using a symetric procedure

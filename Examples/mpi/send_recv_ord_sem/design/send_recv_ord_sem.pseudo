@@ -1,0 +1,25 @@
+// base on hello order semaphore
+procedure main:
+  declare const previous_process = \
+    (process_count + process_number - 1) % process_count // using modular logic to get previous process. we use the process_count to make sure that the process_number is not negative
+  declare const next_process = (process_number + 1) % process_count // using modular logic to get next process
+  declare can_print := true // a bolean working as a semaphore
+
+  if process_number > 0 then
+  // wait for the previous process to finish
+  // we do this by waiting for the message from the previous process
+  // it will not move on until it receives the message
+  // full blocking IO
+    receive(&can_print, 1, previous_process) //we use the & to say that we are going to change the value of can_print
+  end if
+  print "Hello from main thread of process ", process_number, " of " \
+    , process_count," on ", process_hostname
+    // send sends a message to a process, it blocks the process until
+    // the message is known to have been sende, presumably when the bytes of 
+    // the message arriving at the destination process.
+    // synchonic IO/ half blocking IO
+  send(can_print, 1, next_process) // send to next process, next process is an int
+  // we cna only send to a process with in our execution
+  // it also has a tag, extra info we can send
+  // the parameter in the middle is the size of the message, we are sending just one bool
+end procedure

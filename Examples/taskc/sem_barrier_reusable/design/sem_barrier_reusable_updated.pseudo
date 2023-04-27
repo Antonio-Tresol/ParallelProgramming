@@ -1,0 +1,56 @@
+// here we solve the problem
+procedure main:
+  // How many threads have arrived to the barrier
+  shared count := 0
+  // Protects the increment of the count
+  shared can_access_count := create_semaphore(1)
+  // Locked (0) until all threads arrive, then it is unlocked (1)
+  shared turnstile1 := create_semaphore(0) // we use one semaphore per barrier
+  shared turnstile2 := create_semaphore(1) // we need to start the second turnstile in 1 
+  // so that the first group of threads can pass the first iteration
+  // Read thread count from standard input
+  shared constant thread_count = read_integer()
+  // Create a thread team running secondary
+  create_threads(thread_count, secondary)
+end procedure
+
+procedure secondary:
+  while true do
+    Statement A
+
+    // Adapt rendezvous solution here
+    // so here we have the first barrier (turnstile1) in which
+    // counter is incremented to see if all threads have arrived
+    wait(can_access_count)
+      count := count + 1
+      // If all threads have arrived, unlock turnstile1. Instead of a for
+      // we only let one thread pass. But, this thread passing means that one by
+      // one all threads will pass turnstile1.
+      if count = thread_count then
+        wait(turnstile2) // with this we set the turnstile2 to 0.
+        // to make sure that the turnstile1 is set to 0 when all threads have is fundamental because
+        // in that way, if a thread passes all the barriers super fast and returns to the first barrier
+        // it will be blocked by the turnstile1 until all the threads have passed the second barrier
+        signal(turnstile1)
+      end if
+    signal(can_access_count)
+    wait(turnstile1)
+    signal(turnstile1) // after the first has been passed, the turnstile is unlocked
+
+    // Statement B can be only executed until all threads have run Statement A
+    Statement B
+    // then we have the second barrier (turnstile2) in which
+    // counter is decremented to see if all threads have arrived. 
+    // That will be when counter is 0.
+    wait(can_access_count)
+      count := count - 1
+      if count = 0 then
+        wait(turnstile1) // with this we set the turnstile1 to 0
+        signal(turnstile2)
+      end if
+    signal(can_access_count)
+    wait(turnstile2)
+    signal(turnstile2)
+
+  end while
+end procedure

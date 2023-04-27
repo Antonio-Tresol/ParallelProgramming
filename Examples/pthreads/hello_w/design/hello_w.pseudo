@@ -1,0 +1,13 @@
+//Comment: haga un hilo que imprima hello
+procedure main(argc , argv[])
+    //create thread count as result of converting argv[1] to interger
+    thread_count := argv[1] as int
+    for thread_number := 0 to thread_count do
+        //create thread with i as argument
+        thread_create(greet, thread_number)
+    print "hello from the main thread"
+end procedure
+
+procedure greet:
+    print "hello from the second thread"
+end procedure

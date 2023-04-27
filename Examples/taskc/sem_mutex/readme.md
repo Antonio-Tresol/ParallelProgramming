@@ -1,0 +1,1 @@
+Semaphore can be use to implent mutex when ownership is not required. In c++ 20 there are already implemented counting semaphores and binary semaphores. This is a simple implementation of a mutex using a binary semaphore, that is a semaphore that can only have 0 or 1 tokens.

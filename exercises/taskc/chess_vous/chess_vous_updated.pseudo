@@ -1,0 +1,37 @@
+//  Copyright  2022 A.Badilla Olivas GNU GENERAL PUBLIC LICENSE
+procedure main()
+// semaphores to control concurrency
+  shared player1_ready := semaphore(0)
+  shared player2_ready := semaphore(0)
+  shared clock_ready := semaphore(0)
+
+  create_thread(player1)
+  create_thread(player2)
+  create_thread(referee)
+end procedure
+// player1 enters the game, signal he is ready and waits for the referee
+// to signal that the clock is ready
+procedure player1()
+  enter_room()
+  signal(player1_ready)
+  wait(clock_ready)
+  play_chess()
+  
+end procedure
+// player2 enters the game, signal he is ready and waits for the referee
+procedure player2()
+  enter_room()
+  signal(player2_ready)
+  wait(clock_ready)
+  play_chess()
+  
+end procedure
+// referee waits for both players to be ready, the sets the clock and 
+// signals that the clock is ready
+procedure referee()
+  enter_room()
+  wait(player1_ready)
+  wait(player2_ready)
+  set_clock()
+  signal(clock_ready)
+end procedure

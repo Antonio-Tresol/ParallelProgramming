@@ -1,0 +1,40 @@
+procedure main(argc, argv[]):
+  declare constant my_lucky_number = random(0, 100)
+  print("Process ", process_number, ": my lucky number is ", my_lucky_number)
+
+  declare all_min := -1
+  declare all_max := -1
+  declare all_sum := -1
+
+  // Reduce the data value from all processes to a single result value that will
+  // be available in all processes
+  // to share the result value with all the process we use a all_reduce
+  // which is a collective operation where every process will get the result
+  // in their local variable all_sum, all_min, all_max
+  // this is done by a reduce operation and then a broadcast operation
+  all_reduce(my_lucky_number, &all_min, 1, min)
+  all_reduce(my_lucky_number, &all_max, 1, max)
+  all_reduce(my_lucky_number, &all_sum, 1, sum)
+  // finally depending on the lucky number we will print a corresponding message
+  declare constant all_average = all_sum / process_count
+  if my_lucky_number = all_min then
+    print("Process ", process_number, ": my lucky number (", my_lucky_number
+      , ") is the minimum (", all_min, ")")
+  end if
+
+  if my_lucky_number < all_average then
+    print("Process ", process_number, ": my lucky number (", my_lucky_number
+     , ") is less than the average (", all_average, ")")
+  else if my_lucky_number > all_average then
+    print("Process ", process_number, ": my lucky number (", my_lucky_number
+     , ") is greater than the average (", all_average, ")")
+  else
+    print("Process ", process_number, ": my lucky number (", my_lucky_number
+     , ") is equal to the average (", all_average, ")")
+  end if
+
+  if my_lucky_number = all_max then
+    print("Process ", process_number, ": my lucky number (", my_lucky_number
+     , ") is the maximum (", all_max, ")")
+  end if
+end procedure

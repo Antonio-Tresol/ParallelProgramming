@@ -1,0 +1,31 @@
+procedure main(argc, argv[]):
+  declare constant my_lucky_number = random(0, 100)
+  print("Process ", process_number, ": my lucky number is ", my_lucky_number)
+
+  declare all_min := -1
+  declare all_max := -1
+  declare all_sum := -1
+
+  // Reduce the data value from all processes to a single result value in
+  // destination process applying the given operation
+  // values will be reduced to the process with rank 0
+  // the parameters for the reduce functions are
+  //   - the data to be reduced
+  //   - where the result should be stored
+  //   - the operation to be applied
+  //   in this case with MPI,
+  // - the process with rank 0 will receive the result
+  //here we reduce data to the process with rank 0 using min and save the result in all_min
+  reduce(my_lucky_number, &all_min, 1, min, 0)
+  //here we reduce data to the process with rank 0 using max and save the result in all_max
+  reduce(my_lucky_number, &all_max, 1, max, 0)
+  //here we reduce data to the process with rank 0 using sum and save the result in all_sum
+  reduce(my_lucky_number, &all_sum, 1, sum, 0)
+// finally we print the results but only in the process with rank 0
+  if process_number = 0 then
+    declare constant all_average = all_sum / process_count
+    print("Process ", process_number, ": all minimum = ", all_min)
+    print("Process ", process_number, ": all average = ", all_average)
+    print("Process ", process_number, ": all maximum = ", all_max)
+  end if
+end procedure

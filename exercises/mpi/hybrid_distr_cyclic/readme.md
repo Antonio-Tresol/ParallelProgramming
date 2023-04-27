@@ -1,0 +1,2 @@
+Ejercicio 65 [hybrid_distr_cyclic]
+Modifique su solución al Ejercicio 63 [hybrid_distr_bcast] para repartir el rango usando un mapeo cíclico entre los procesos y los hilos.

@@ -1,0 +1,15 @@
+procedure main:
+  shared constant skater_count = read_integer()
+  shared constant room_capacity = read_integer()
+  // h
+  shared can_skate := create_semaphore(room_capacity)
+  create_threads(skater_count, skater)
+end procedure
+
+procedure skater:
+  // Concurrency-bounded region
+  wait(can_skate) // all threads will pass this line until room_capacity
+  // is reached then they will have to wait
+  skate()
+  signal(can_skate)
+end procedure

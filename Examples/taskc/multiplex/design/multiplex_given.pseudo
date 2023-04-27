@@ -1,0 +1,10 @@
+procedure main:
+  shared constant skater_count = read_integer()
+  shared constant room_capacity = read_integer()
+  create_threads(skater_count, skater)
+end procedure
+
+procedure skater:
+  // Concurrency-bounded region
+  skate()
+end procedure

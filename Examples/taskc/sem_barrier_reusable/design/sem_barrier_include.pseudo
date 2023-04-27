@@ -1,0 +1,69 @@
+//here we make an interface of reusuable barrier
+define barrier as record of
+  limit as unsigned integer
+  count as unsigned integer
+  can_access_record as mutex
+  turnstile1 as semaphore
+  turnstile2 as semaphore
+end record
+
+procedure create_barrier(limit):
+  declare new_barrier as barrier
+  new_barrier.limit := limit
+  new_barrier.count := 0
+  new_barrier.can_access_record := create_semaphore(1)
+  new_barrier.turnstile1 := create_semaphore(0)
+  new_barrier.turnstile2 := create_semaphore(1)
+  return new_barrier
+end procedure
+
+procedure wait(barrier):
+  barrier_phase1(barrier)
+  barrier_phase2(barrier)
+end procedure
+
+procedure barrier_phase1(barrier):
+  wait(barrier.can_access_record)
+  if ++barrier.count == barrier.limit then
+    wait(barrier.turnstile2)
+    signal(barrier.turnstile1)
+  end if
+  signal(barrier.can_access_record)
+
+  wait(barrier.turnstile1)
+  signal(barrier.turnstile1)
+end procedure
+
+procedure barrier_phase2(barrier):
+  wait(barrier.can_access_record)
+  if --barrier.count == 0 then
+    wait(barrier.turnstile1)
+    signal(barrier.turnstile2)
+  end if
+  signal(barrier.can_access_record)
+
+  wait(barrier.turnstile2)
+  signal(barrier.turnstile2)
+end procedure
+
+procedure main:
+  shared constant thread_count = read_integer()
+  shared my_barrier := create_barrier(thread_count)
+  create_threads(thread_count, secondary)
+end procedure
+
+procedure secondary:
+  while true do
+    Sentence A
+    barrier_phase1(my_barrier)
+    Sentence B
+    barrier_phase2(my_barrier)
+  end while
+end procedure
+
+procedure third(row_count):
+  for row := 0 to row_count do
+    process_row(row)
+    wait(my_barrier)
+  end for
+end procedure

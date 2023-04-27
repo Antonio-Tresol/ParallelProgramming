@@ -1,0 +1,2 @@
+RENDEZVOUS is essentially a cross signaling mechanism. It is a way for two or more threads to syncronize.
+in this example we explore therefore the concepts of rendevous and we also analyze the cases in which a deadlock can occur. a Deadlock is define as a situation in which two or more threads are waiting for each other to complete a task, causing them to sleep forever.

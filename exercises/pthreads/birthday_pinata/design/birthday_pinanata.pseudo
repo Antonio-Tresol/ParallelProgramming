@@ -1,0 +1,63 @@
+birthday_pinata: // share memory
+  pinata_life_points := 0
+  mutex can_attack_pinata
+
+party_thread_private_memory:
+  id // thread id
+  reference birthday_pinata
+  did_I_break_the_pinata
+  count_of_attacks
+  pinata_base_life_points := 0
+
+procedure 
+
+procedure main(arguments):
+  thread_count := arguments[1]
+  declare birthday_pinata
+  pinata_life_points := arguments[2]
+  pinata_base_life_points := arguments[2]
+  initialize mutex can_attack_pinata
+  private_memory
+  party_threads
+  start_party_threads(thread_count, private_memory, birthday_pinata)
+  do clean all
+end procedure
+
+procedure start_party_threads(thread_count, private_memory, birthday_pinata, pinata_base_life_points):
+  party_threads := array of threads[thread_count]
+  private_memory := array of party_thread_private_memory[thread_count]
+  for i := 1 to thread_count:
+    private_memory[i].id := i
+    private_memory[i].birthday_pinata := birthday_pinata
+    private_memory[i].count_of_attacks := 0
+    party_threads[i].did_I_break_the_pinata := false
+    party_threads[i].pinata_base_life_points := pinata_base_life_points
+    start party_threads[i] with party_thread(private_memory[i])
+
+  end for
+end procedure
+
+procedure attack_pinata(private_memory_t):
+  birthday_pinata := private_memory_t.birthday_pinata
+  while true:
+    mutex_LOCK(birthday_pinata.can_attack_pinata)
+    if birthday_pinata.pinata_life_points > 0:
+      birthday_pinata.pinata_life_points := pinata_life_points - 1
+      private_memory_t.count_of_attacks := private_memory_t.count_of_attacks + 1
+      if birthday_pinata.pinata_life_points == 0:
+        private_memory_t.did_I_break_the_pinata := true
+      end if
+    mutex_UNLOCK(birthday_pinata.can_attack_pinata)
+    end if
+    else: 
+    mutex_UNLOCK(birthday_pinata.can_attack_pinata)
+      if private_memory_t.did_I_break_the_pinata == true:
+          print "Thread "+ i + "/"+ private_memory_t.pinata_base_life_points + ":" + private_memory_t.count_of_attacks +  "hits"
+          print "I broke the pinata"
+      end else if
+      else: 
+        print "Thread "+ i + "/"+ private_memory_t.pinata_base_life_points + ":" + private_memory_t.count_of_attacks +  "hits"
+      end else
+    mutex_UNLOCK(can_attack_pinata)
+  end if
+

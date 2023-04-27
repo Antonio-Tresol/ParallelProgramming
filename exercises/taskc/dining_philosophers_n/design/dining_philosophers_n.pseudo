@@ -1,0 +1,75 @@
+//  Copyright  2022 A.Badilla Olivas GNU GENERAL PUBLIC LICENSE
+procedure main(argc, argv[]):
+// get the number of philosophers
+  philosopherCount := argv[1]
+  // create the number of chopsticks
+  chopsticksNumber := philosopherNumber
+  // create an array of semaphores set to 1
+  shared chopsticks[] := create_semaphores(chopsticksNumber, 1)
+  // if we have only one philosopher, he can eat
+  if (philosopherNumber < 2) then:
+    create_thread(alonePhilosopher, 0)
+  else 
+  // else we create the philosophers
+    for id := 0 to philosopherNumber do:
+      create_thread(philosopher, id)
+    end for
+  end if
+end procedure
+// this procedure is called when there are more than one philosopher
+// the idea behind is that if we put some philosophers on the left and some on the right
+// we can avoid the deadlock
+procedure philosopher(id):
+// do forever
+  while true do:
+  // think
+    think()
+    // get the chopsticks
+    // if the philosopher id is even, he gets the right chopstick first
+    if id % 2 = 0 then:
+      get_right_chopstick(id)
+      get_left_chopstick(id)
+    else: // else he gets the left chopstick first
+      get_left_chopstick(id)
+      get_right_chopstick(id)
+    end if
+    eat() // when he has both chopsticks, he eats
+    put_left_chopstick(id) // and puts the chopsticks back
+    put_right_chopstick(id)
+  end while
+end procedure
+
+procedure alonePhilosopher(id):
+  while true do:
+    think()
+    get_both_chopsticks(id)
+    eat()
+    put_both_chopsticks(id)
+  end while
+end procedure
+// to get the left chopstick, the philosopher waits for the semaphore
+procedure get_left_chopstick(id):
+  // they wait for the semaphore of its peer
+  wait(chopsticks[(id + 1) mod philosopherCount])
+end procedure
+
+procedure get_right_chopstick(id):
+// they wait for the semaphore for his own semaphore
+  wait(chopsticks[id])
+end procedure
+// if the philosopher has both chopsticks, he can eat
+procedure get_both_chopsticks(id):
+  wait(chopsticks[id])
+end procedure
+
+procedure put_left_chopstick(id):
+  signal(chopsticks[(id + 1) mod philosopherCount])
+end procedure
+
+procedure put_right_chopstick(id):
+  signal(chopsticks[id])
+end procedure
+
+procedure put_both_chopsticks(id):
+  signal(chopsticks[id])
+end procedure
