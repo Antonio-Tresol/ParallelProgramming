@@ -1,2 +1,2 @@
-# concurrente22b-Antonio_BadilaOlivas
+# ParalleProgramming
 Repository With Projects of Concurrent Programming
