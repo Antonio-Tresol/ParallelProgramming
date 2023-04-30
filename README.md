@@ -1,2 +1,2 @@
-# ParalleProgramming
+# ParallelProgramming
 Repository with homework, exercises and examples of parallel Programming
