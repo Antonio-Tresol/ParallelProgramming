@@ -1,3 +1,7 @@
 c_cpp_properties.json
 settings.json
 tareas/goldbach_pthread/.vscode/settings.json
+.vscode
+bin
+build
+doc
